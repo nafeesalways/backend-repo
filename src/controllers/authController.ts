@@ -25,13 +25,14 @@ export const loginUser = (req: Request, res: Response) : any => {
   );
 
   // 3. কুকি সেট করা (লোকালহোস্টের জন্য অপ্টিমাইজড)
-  res.cookie('token', token, {
-    httpOnly: true, // জাভাস্ক্রিপ্ট দিয়ে এক্সেস করা যাবে না
-    secure: false,  // লোকালহোস্টের জন্য false (HTTPS হলে true)
-    sameSite: 'lax',
-    path: '/',      // সব রাউটে কাজ করবে
-    maxAge: 24 * 60 * 60 * 1000 // 1 দিন
-  });
+res.cookie('token', token, {
+  httpOnly: true,
+  secure: true, 
+  sameSite: 'none', 
+  path: '/',
+  maxAge: 24 * 60 * 60 * 1000
+});
+
 
   return res.json({ success: true, message: 'Login successful' });
 };

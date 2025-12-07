@@ -35,7 +35,21 @@ app.get('/', (req, res) => {
   res.send('Backend Server is Running...');
 });
 
-// --- Start Server ---
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+// // --- Start Server ---
+// app.listen(PORT, () => {
+//   console.log(`✅ Server running on http://localhost:${PORT}`);
+// });
+
+
+
+// app.listen অংশটি কমেন্ট করে দিন অথবা শুধু লোকাল এনভায়রনমেন্টের জন্য রাখুন
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+// অবশ্যই app এক্সপোর্ট করতে হবে
+export default app;
+
