@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 
-dotenv.config(); // .env লোড করা
+dotenv.config(); // do .env load
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -26,12 +26,12 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept']
 }));
 
-// বাকি কোড একই থাকবে...
+
 
 
 // --- Routes ---
-app.use('/auth', authRoutes);       // e.g., localhost:5000/auth/login
-app.use('/products', productRoutes); // e.g., localhost:5000/products (POST/PUT/DELETE)
+app.use('/auth', authRoutes);      
+app.use('/products', productRoutes); 
 
 // Health Check Route
 app.get('/', (req, res) => {
@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
 
 
 
-// app.listen অংশটি কমেন্ট করে দিন অথবা শুধু লোকাল এনভায়রনমেন্টের জন্য রাখুন
+
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
@@ -53,6 +53,6 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// অবশ্যই app এক্সপোর্ট করতে হবে
+
 export default app;
 
