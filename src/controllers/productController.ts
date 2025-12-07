@@ -7,11 +7,11 @@ const PRODUCTS_COLLECTION = 'products';
 // add product
 export const addProduct = async (req: Request, res: Response) : Promise<any> => {
   try {
-    console.log("Received Product Data:", req.body); // এই লাইনটি অ্যাড করুন
+    console.log("Received Product Data:", req.body); 
 
     const productData = req.body;
     
-    // ডাটা ভ্যালিডেশন (সিম্পল চেক)
+    //data validation
     if (!productData.name || !productData.price) {
       throw new Error("Missing required fields");
     }
@@ -23,8 +23,8 @@ export const addProduct = async (req: Request, res: Response) : Promise<any> => 
     });
 
     return res.status(201).json({ success: true, id: docRef.id, message: 'Product added' });
-  } catch (error: any) { // Error টাইপ any দিন
-    console.error("🔥 Error adding product:", error); // বিস্তারিত এরর লগ করুন
+  } catch (error: any) { 
+    console.error("🔥 Error adding product:", error); 
     return res.status(500).json({ success: false, error: error.message || 'Failed to add product' });
   }
 };
