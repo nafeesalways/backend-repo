@@ -17,10 +17,13 @@ app.use(cookieParser());
 
 
 app.use(cors({
-  origin: 'http://localhost:3000', // একদম এক্সাক্ট (শেষে slash নেই)
-  credentials: true, // এটি true হতেই হবে
+  origin: [
+    'https://frontend-repo-lemon.vercel.app', 
+    'http://localhost:3000'
+  ],
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept']
 }));
 
 // বাকি কোড একই থাকবে...
