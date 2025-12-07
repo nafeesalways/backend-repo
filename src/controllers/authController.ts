@@ -1,33 +1,36 @@
-
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { AuthRequest } from '../middleware/authMiddleware';
- 
-//requirements from assignment
+
+// হার্ডকোডেড ক্রেডেনশিয়াল (অ্যাসাইনমেন্টের জন্য)
 const ADMIN_EMAIL = 'admin@test.com';
 const ADMIN_PASS = '123456';
 
 export const loginUser = (req: Request, res: Response) : any => {
   const { email, password } = req.body;
 
-  // 1. check credential
+  // 1. ক্রেডেনশিয়াল চেক
   if (email !== ADMIN_EMAIL || password !== ADMIN_PASS) {
     return res.status(401).json({ success: false, message: 'Invalid email or password' });
   }
 
-  // 2. make JWT token
+  // 2. JWT টোকেন জেনারেট
+  // process.env.JWT_SECRET স্ট্রিং নিশ্চিত করা হচ্ছে
+  const secret = process.env.JWT_SECRET || 'fallback_secret_key';
+  
   const token = jwt.sign(
     { email, role: 'admin' }, 
-    process.env.JWT_SECRET as string, 
+    secret, 
     { expiresIn: '1d' }
   );
 
-  // 3. set HTTP-Only cookie
+  // 3. কুকি সেট করা (লোকালহোস্টের জন্য অপ্টিমাইজড)
   res.cookie('token', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', 
+    httpOnly: true, // জাভাস্ক্রিপ্ট দিয়ে এক্সেস করা যাবে না
+    secure: false,  // লোকালহোস্টের জন্য false (HTTPS হলে true)
     sameSite: 'lax',
-    maxAge: 24 * 60 * 60 * 1000 // 1 day
+    path: '/',      // সব রাউটে কাজ করবে
+    maxAge: 24 * 60 * 60 * 1000 // 1 দিন
   });
 
   return res.json({ success: true, message: 'Login successful' });

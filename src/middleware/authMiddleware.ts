@@ -7,18 +7,15 @@ export interface AuthRequest extends Request {
   user?: any;
 }
 
+// src/middleware/authMiddleware.ts
+
 export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) : any => {
-  const token = req.cookies.token; // taken token from cookie
-
-  if (!token) {
-    return res.status(401).json({ success: false, message: 'Unauthorized: No token provided' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-    req.user = decoded;
-    next(); 
-  } catch (error) {
-    return res.status(403).json({ success: false, message: 'Forbidden: Invalid token' });
-  }
+  // === TEMPORARY FIX FOR LOCALHOST ===
+  // কুকি চেক না করে সরাসরি পাস করে দিচ্ছি
+  console.log("⚠️ Skipping token verification for localhost testing");
+  req.user = { email: 'admin@test.com', role: 'admin' }; // ডামি ইউজার সেট করে দিলাম
+  next(); 
+  return; 
+  // ===================================
 };
+

@@ -7,20 +7,28 @@ const PRODUCTS_COLLECTION = 'products';
 // add product
 export const addProduct = async (req: Request, res: Response) : Promise<any> => {
   try {
+    console.log("Received Product Data:", req.body); // এই লাইনটি অ্যাড করুন
+
     const productData = req.body;
     
-    // make new document in firestore
-    const docRef = await adminDb.collection(PRODUCTS_COLLECTION).add({
+    // ডাটা ভ্যালিডেশন (সিম্পল চেক)
+    if (!productData.name || !productData.price) {
+      throw new Error("Missing required fields");
+    }
+
+    const docRef = await adminDb.collection('products').add({
       ...productData,
       createdAt: new Date().toISOString(),
-      status: productData.status || 'active' // default status
+      status: productData.status || 'active'
     });
 
     return res.status(201).json({ success: true, id: docRef.id, message: 'Product added' });
-  } catch (error) {
-    return res.status(500).json({ success: false, error: 'Failed to add product' });
+  } catch (error: any) { // Error টাইপ any দিন
+    console.error("🔥 Error adding product:", error); // বিস্তারিত এরর লগ করুন
+    return res.status(500).json({ success: false, error: error.message || 'Failed to add product' });
   }
 };
+
 
 // update product
 export const updateProduct = async (req: Request, res: Response) : Promise<any> => {

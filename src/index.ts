@@ -14,10 +14,17 @@ const PORT = process.env.PORT || 5000;
 // --- Middlewares ---
 app.use(express.json());
 app.use(cookieParser());
+
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000', // Frontend URL
-  credentials: true, // কুকি এলাউ করার জন্য মাস্ট
+  origin: 'http://localhost:3000', // একদম এক্সাক্ট (শেষে slash নেই)
+  credentials: true, // এটি true হতেই হবে
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
 }));
+
+// বাকি কোড একই থাকবে...
+
 
 // --- Routes ---
 app.use('/auth', authRoutes);       // e.g., localhost:5000/auth/login
